@@ -2,33 +2,49 @@
     //Declare Variables
     //Multidimensional Array
     $students = array(
-        1 => array('name' =>'Ben Smith',
-                'designation' => 'Technical Systems Analyst',
-                'image' => 'img/me.jpg',
-                'facebook' => 'https://www.facebook.com/DarkCreed64',
-                'linkedin' => 'https://www.linkedin.com/in/benjamin-smith-27b867101/',
-                'level' => '<i class="fa-solid fa-4"></i>'),
-        2 => array('name' => 'David Price',
-                'designation' => 'System Administrator',
-                'image' => 'img/david_price.jpg',
-                'facebook' => 'https://www.facebook.com/zuck',
-                'linkedin' => 'https://www.linkedin.com/',
-                'level' => '<i class="fa-solid fa-2"></i>'),
-        3 => array('name' => 'Devon Nash',
-                'designation' => 'UX Designer',
-                'image' => 'img/devon_nash.jpg',
-                'facebook' => 'https://www.facebook.com/TheElonmusk',
-                'linkedin' => 'https://www.linkedin.com/',
-                'level' => '<i class="fa-solid fa-3"></i>')
-                );
-    $Intro= "Hello! My name is Ben, I am a Computer Information Technology major with a minor in Information Security. 
-            This is my senior year at NKU and previously I graduated from Cincinnati State with an Associates of Applied Science with my field of
-            study being Business Programming and Administration. I also work at Greater Cincinnati Water Works as a Technical Systems Analyst, where 
-            I oversee some of our custom web applications as well as data analysis and reporting. I have two dogs and two cats and enjoy spending time
-            with my wife and her family as well as being an avid gamer and tech enthusiast.";
-    $Quote="For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.";
-    $FunFact="A fun fact about me is that I enjoy cooking and learning new recipes, if I didn't persue a career in Information Technology then I would 
-            have like to have become a chef and have my own food truck.";
+        array('name' =>'Ben Smith',
+              'designation' => 'Technical Systems Analyst',
+              'image' => 'img/me.jpg',
+              'facebook' => 'https://www.facebook.com/DarkCreed64',
+              'linkedin' => 'https://www.linkedin.com/in/benjamin-smith-27b867101/',
+              'level' => '<i class="fa-solid fa-4"></i>',
+              'profession' => 'Developer/System Administrator',
+              'company' => 'Microsoft',
+              'email' => 'smithb77@mymail.nku.edu',
+              'intro' => 'Hello! My name is Ben, I am a Computer Information Technology major with a minor in Information Security. 
+                          This is my senior year at NKU and previously I graduated from Cincinnati State with an Associates of Applied Science with my field of
+                          study being Business Programming and Administration. I also work at Greater Cincinnati Water Works as a Technical Systems Analyst, where 
+                          I oversee some of our custom web applications as well as data analysis and reporting. I have two dogs and two cats and enjoy spending time
+                        with my wife and her family as well as being an avid gamer and tech enthusiast.',
+              'quote' => 'For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.',
+              'funfact' => "A fun fact about me is that I enjoy cooking and learning new recipes, if I didn't persue a career in Information Technology then I would 
+                            have like to have become a chef and have my own food truck."),
+        array('name' => 'David Price',
+              'designation' => 'System Administrator',
+              'image' => 'img/david_price.jpg',
+              'facebook' => 'https://www.facebook.com/zuck',
+              'linkedin' => 'https://www.linkedin.com/',
+              'level' => '<i class="fa-solid fa-2"></i>',
+              'profession' => 'IT Manager',
+              'company' => 'General Electric',
+              'email' => 'dprice@gmail.com',
+              'intro' => 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere praesentium debitis ipsa, eaque beatae delectus. Tenetur, placeat! Eaque aspernatur omnis magnam nam error exercitationem atque cum nisi dolorum, incidunt eveniet dicta facere quas totam adipisci dolorem odio? Minima dolore rem iure facere beatae nesciunt iste, fugit, recusandae quam non hic?',
+              'quote' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, numquam?',
+              'funfact' => 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae nobis cumque ex omnis facere minus quam excepturi asperiores qui expedita?' ),
+        array('name' => 'Devon Nash',
+              'designation' => 'UX Designer',
+              'image' => 'img/devon_nash.jpg',
+              'facebook' => 'https://www.facebook.com/TheElonmusk',
+              'linkedin' => 'https://www.linkedin.com/',
+              'level' => '<i class="fa-solid fa-3"></i>',
+              'profession' => 'Game Developer',
+              'company' => 'Riot Games',
+              'email' => 'cool.dev@gmail.com',
+              'intro' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed quo suscipit officiis vero minima nesciunt, provident temporibus perspiciatis, odio esse ea. Eum quidem numquam sint nesciunt consequatur ex modi autem aspernatur ullam at. Error porro, deleniti officiis dolorem animi ex ducimus ad veniam iusto ea, obcaecati repellendus! Optio, facilis laudantium?',
+              'quote' => 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. In, fuga?',
+              'funfact' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum quis soluta optio dolores voluptates. Eum architecto quaerat excepturi repudiandae odit.' )
+            );
+    
 ?>
 
 <!DOCTYPE html>
@@ -44,35 +60,37 @@
         integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
     <link rel="stylesheet" href="assets/css/detail.css" />
     <title>
-        <?= 'ASE 230 - Benjamin Smith'; ?>
+        <?= 'ASE 230 - '.$students[$_GET['id']]['name']; ?>
     </title>
 </head>
 
 <body>
-    <nav class="navbar fixed-top" style="background-color: #e3f2fd;">
-        <a class="navbar-brand" href="index.php">Home</a>
-    </nav>
     <div class="container text-center mb-5">
-        <h1>
-            <?= 'This is ASE 230 - Benjamin Smith'; ?>
-        </h1>
+        <div class="row p-4">
+            <nav class="navbar fixed-top" style="background-color: #e3f2fd;">
+                <a class="navbar-brand" href="index.php">Home</a>
+            </nav>
+        </div>
+        <div class="row text-center">
+            <h1><?= 'This is ASE 230 - '.$students[$_GET['id']]['name']; ?></h1>
+        </div>
     </div>
     <div class="container">
         <div class="row">
             <div class="col-lg-5 col-md-6">
                 <div class="mb-2">
-                    <img class="w-100" src=<?= 'img/me.jpg'; ?> alt="" />
+                    <img class="w-100" src=<?= $students[$_GET['id']]['image']; ?> alt="" />
                 </div>
                 <div class="mb-2 d-flex">
                     <h4 class="font-weight-normal">
-                        <?= 'Benjamin Smith'; ?>
+                        <?= $students[$_GET['id']]['name']; ?>
                     </h4>
                     <div class="social d-flex ml-auto">
                         <p class="pr-2 font-weight-normal">Follow me on:</p>
-                        <a href="#" class="text-muted mr-1">
+                        <a href=<?= $students[$_GET['id']]['facebook']; ?> class="text-muted mr-1">
                             <i class="fab fa-facebook-f"></i>
                         </a>
-                        <a href="#" class="text-muted">
+                        <a href=<?= $students[$_GET['id']]['linkedin']; ?> class="text-muted">
                             <i class="fab fa-linkedin"></i>
                         </a>
                     </div>
@@ -81,15 +99,17 @@
                     <ul class="list-unstyled">
                         <li class="media">
                             <span class="w-25 text-black font-weight-normal">Dream profession:</span>
-                            <label class="media-body"><?= 'Developer/System Administrator'; ?></label>
+                            <label class="media-body"><?= $students[$_GET['id']]['profession']; ?></label>
                         </li>
                         <li class="media">
                             <span class="w-25 text-black font-weight-normal">Dream company:</span>
-                            <label class="media-body"><?= 'Microsoft'; ?></label>
+                            <label class="media-body"><?= $students[$_GET['id']]['company']; ?></label>
                         </li>
                         <li class="media">
                             <span class="w-25 text-black font-weight-normal">Email:</span>
-                            <label class="media-body"><?= 'smithb77@mymail.nku.edu</label>'; ?>
+                            <label class="media-body">
+                                <?= $students[$_GET['id']]['email']; ?>
+                            </label>
                         </li>
                     </ul>
                 </div>
@@ -97,11 +117,11 @@
             <div class="col-lg-7 col-md-6 pl-xl-3">
                 <h5 class="font-weight-normal">Short intro</h5>
                 <p>
-                    <?= $Intro; ?>
+                    <?= $students[$_GET['id']]['intro']; ?>
                 </p>
                 <div class="my-2 bg-light p-2">
                     <p class="font-italic mb-0">
-                        <?= $Quote; ?>
+                        <?= $students[$_GET['id']]['quote']; ?>
                     </p>
                 </div>
                 <div class="mb-2 mt-2 pt-1">
@@ -148,7 +168,7 @@
                 </div>
                 <h5 class="font-weight-normal">Fun fact</h5>
                 <p>
-                    <?= $FunFact; ?>
+                    <?= $students[$_GET['id']]['funfact']; ?>
                 </p>
             </div>
         </div>
