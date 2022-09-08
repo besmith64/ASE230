@@ -18,7 +18,10 @@
                         with my wife and her family as well as being an avid gamer and tech enthusiast.',
               'quote' => 'For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.',
               'funfact' => "A fun fact about me is that I enjoy cooking and learning new recipes, if I didn't persue a career in Information Technology then I would 
-                            have like to have become a chef and have my own food truck."),
+                            have like to have become a chef and have my own food truck.",
+               'skills' => array('Data Analysis' => '85',
+                                 'Development' => '70',
+                                 'Data Administration' => '60')),
         array('name' => 'David Price',
               'designation' => 'System Administrator',
               'image' => 'img/david_price.jpg',
@@ -30,7 +33,10 @@
               'email' => 'dprice@gmail.com',
               'intro' => 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere praesentium debitis ipsa, eaque beatae delectus. Tenetur, placeat! Eaque aspernatur omnis magnam nam error exercitationem atque cum nisi dolorum, incidunt eveniet dicta facere quas totam adipisci dolorem odio? Minima dolore rem iure facere beatae nesciunt iste, fugit, recusandae quam non hic?',
               'quote' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, numquam?',
-              'funfact' => 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae nobis cumque ex omnis facere minus quam excepturi asperiores qui expedita?' ),
+              'funfact' => 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae nobis cumque ex omnis facere minus quam excepturi asperiores qui expedita?',
+              'skills' => array('Management' => '90',
+                                'System Administration' => '70',
+                                'Accounting' => '60')),
         array('name' => 'Devon Nash',
               'designation' => 'UX Designer',
               'image' => 'img/devon_nash.jpg',
@@ -42,7 +48,10 @@
               'email' => 'cool.dev@gmail.com',
               'intro' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed quo suscipit officiis vero minima nesciunt, provident temporibus perspiciatis, odio esse ea. Eum quidem numquam sint nesciunt consequatur ex modi autem aspernatur ullam at. Error porro, deleniti officiis dolorem animi ex ducimus ad veniam iusto ea, obcaecati repellendus! Optio, facilis laudantium?',
               'quote' => 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. In, fuga?',
-              'funfact' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum quis soluta optio dolores voluptates. Eum architecto quaerat excepturi repudiandae odit.' )
+              'funfact' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum quis soluta optio dolores voluptates. Eum architecto quaerat excepturi repudiandae odit.',
+              'skills' => array('Graphic Design' => '80',
+                                'Development' => '50',
+                                'Team Building' => '60'))
             );
     
 ?>
@@ -127,45 +136,21 @@
                 <div class="mb-2 mt-2 pt-1">
                     <h5 class="font-weight-normal">Top skills</h5>
                 </div>
+                <?php foreach($students[$_GET['id']]['skills'] as $name => $skill): ?>
                 <div class="py-1">
                     <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85"
-                            aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar" role="progressbar" style=<?= "width: ".$skill."%"; ?>
+                            aria-valuenow=<?= $skill; ?> aria-valuemin="0" aria-valuemax="100">
                             <div class="progress-bar-title">
-                                <?= 'Data Analysis'; ?>
+                                <?= $name; ?>
                             </div>
                             <span class="progress-bar-number">
-                                <?= '85%'; ?>
+                                <?= $skill."%"; ?>
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class="py-1">
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 70%" aria-valuenow="70"
-                            aria-valuemin="0" aria-valuemax="100">
-                            <div class="progress-bar-title">
-                                <?= 'Development'; ?>
-                            </div>
-                            <span class="progress-bar-number">
-                                <?= '70%'; ?>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="py-1">
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60"
-                            aria-valuemin="0" aria-valuemax="100">
-                            <div class="progress-bar-title">
-                                <?= 'Data Administration'; ?>
-                            </div>
-                            <span class="progress-bar-number">
-                                <?= '60%'; ?>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
                 <h5 class="font-weight-normal">Fun fact</h5>
                 <p>
                     <?= $students[$_GET['id']]['funfact']; ?>
