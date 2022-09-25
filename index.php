@@ -1,26 +1,26 @@
-<?php 
-    //Declare Variables
-    //Multidimensional Array
-    $students = array(
-                    array('name' =>'Ben Smith',
-                          'designation' => 'Technical Systems Analyst',
-                          'image' => 'img/me.jpg',
-                          'facebook' => 'https://www.facebook.com/DarkCreed64',
-                          'linkedin' => 'https://www.linkedin.com/in/benjamin-smith-27b867101/',
-                          'level' => '<i class="fa-solid fa-4"></i>'),
-                    array('name' => 'David Price',
-                          'designation' => 'System Administrator',
-                          'image' => 'img/david_price.jpg',
-                          'facebook' => 'https://www.facebook.com/zuck',
-                          'linkedin' => 'https://www.linkedin.com/',
-                          'level' => '<i class="fa-solid fa-2"></i>'),
-                    array('name' => 'Devon Nash',
-                          'designation' => 'UX Designer',
-                          'image' => 'img/devon_nash.jpg',
-                          'facebook' => 'https://www.facebook.com/TheElonmusk',
-                          'linkedin' => 'https://www.linkedin.com/',
-                          'level' => '<i class="fa-solid fa-3"></i>')
-                          ); ?>
+<?php
+// Include php files
+include('data.php');
+include('functions.php');
+
+function card($i)
+{
+    include('data.php');
+    $person_info = array(
+        'name' => $students[$i]['name'],
+        'age' => age($students[$i]['dob']),
+        'months_old' => time_intervals($students[$i]['dob'])['months'],
+        'days_old' => time_intervals($students[$i]['dob'])['days'],
+        'image' => $students[$i]['image'],
+        'facebook' => $students[$i]['facebook'],
+        'linkedin' => $students[$i]['linkedin'],
+        'designation' => $students[$i]['designation'],
+        'level' => $students[$i]['level']
+    );
+
+    return $person_info;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,28 +53,31 @@
             </div>
         </div>
         <div class="row">
-            <?php for($i=0; $i<count($students); $i++): ?>
+            <?php for ($i = 0; $i < count($students); $i++) : ?>
             <!-- # Single Advisor -->
             <div class="col-12 col-sm-6 col-lg-3">
                 <div class="single_advisor_profile wow fadeInUp" data-wow-delay="0.2s"
                     style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
                     <div class="advisor_thumb">
-                        <a href=<?='details.php?id='.$i; ?>>
-                            <img src=<?= $students[$i]['image']; ?> alt="" width="250" height="315" />
+                        <a href=<?= 'details.php?id=' . $i; ?>>
+                            <img src=<?= card($i)['image']; ?> alt="" width="250" height="315" />
                         </a>
                         <div class="social-info">
-                            <a href=<?= $students[$i]['facebook']; ?>>
+                            <a href=<?= card($i)['facebook']; ?>>
                                 <i class="fa fa-facebook"></i>
                             </a>
-                            <a href=<?= $students[$i]['linkedin']; ?>>
+                            <a href=<?= card($i)['linkedin']; ?>>
                                 <i class="fa fa-linkedin"></i>
                             </a>
                         </div>
                     </div>
                     <div class="single_advisor_details_info">
-                        <h6><?= $students[$i]['name']; ?></h6>
-                        <p class="designation"><?= $students[$i]['designation']; ?></p>
-                        <p><?= 'College Level:'; ?></p><?= $students[$i]['level']; ?>
+                        <h6><?= card($i)['name']; ?></h6>
+                        <p><?= 'Age: ' . card($i)['age']; ?></p>
+                        <p><?= 'Months Old: ' . card($i)['months_old']; ?></p>
+                        <p><?= 'Days Old: ' . card($i)['days_old']; ?></p>
+                        <p class="designation"><?= card($i)['designation']; ?></p>
+                        <p><?= 'College Level:'; ?></p><?= card($i)['level']; ?>
                     </div>
                 </div>
             </div>
