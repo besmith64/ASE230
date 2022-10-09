@@ -2,11 +2,7 @@
 include('csv_util.php');
 // the file displays a form with a text field where users can type the quote and a select box that displays all the available authors
 // as the form gets submitted, a new quote is added to quotes.csv
-$author = array(
-    1 => "Edgar Allen Poe",
-    2 => "Dr. Seus",
-    3 => "Walt Disney"
-);
+$author = read_csv('data\authors.csv');
 $quote = '';
 $error = '';
 
@@ -51,7 +47,7 @@ if (isset($_POST['submit'])) {
             <select name="author" class="form-select" id="inputGroupSelect">
                 <option selected>Choose...</option>
                 <?php foreach ($author as $key => $val) : ?>
-                <option value=<?= $key; ?>><?= $val; ?></option>
+                <option value=<?= $val[0]; ?>><?= $val[1]; ?></option>
                 <?php endforeach; ?>
             </select>
         </div>

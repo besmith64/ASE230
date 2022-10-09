@@ -17,7 +17,7 @@ function read_csv($file)
 function read_one_csv_element($file, $element)
 {
     $handle = read_csv($file); // pass to read_csv function to get array
-    foreach ($handle as $key => $val) {
+    foreach ($handle as $val) {
         if ($val[0] == $element) { // match the value to the index
             return $val[1]; // return the single value
         }
@@ -31,8 +31,6 @@ function write_csv($file, $values)
 
         fputcsv($handle, $values); // add new row to csv file
 
-        // file_put_contents($f, $values);
-
         fclose($handle);
     } else {
         die("Error: The file does not exist."); // return error if not a file
@@ -42,8 +40,27 @@ function write_csv($file, $values)
 function edit_csv($file, $values)
 {
     $handle = read_csv($file); // pass to read_csv function to get array
+    $new_array = [];
+    foreach ($handle as $val) {
+        if (isset($val)) {
+            $new_array += [$val[0] => $val[1]];
+        }
+    }
+    // foreach ($new_array as $key => $val) {
+    //     if ($key == $values[0]) {
+    //         $val = $values[1];
+    //     }
+    // }
 
+    //file_put_contents($file, $new_array);
+    var_dump($new_array);
 }
 // one function for emptying the record on a specific line (delete the content of a line, but leave an empty line  in the file)
 
 // one function for deleting a line from the file (delete the line altogether)
+
+//Testing Area
+$quote = array(
+    2 => 'Test'
+);
+print_r(read_one_csv_element('data\quotes.csv', 3));
