@@ -4,7 +4,7 @@ function read_csv($file)
 {
     if (file_exists($file) and is_file($file)) { // Check if file exists before proceeding
         $handle = fopen($file, 'r'); // open the file
-        while (($row = fgetcsv($handle, 1024)) !== false) {
+        while (($row = fgetcsv($handle)) !== false) {
             $csv_array[] = $row; // append csv to array
         }
         fclose($handle); // close the file
@@ -40,20 +40,20 @@ function write_csv($file, $values)
 function edit_csv($file, $values)
 {
     $handle = read_csv($file); // pass to read_csv function to get array
-    $new_array = [];
-    foreach ($handle as $val) {
-        if (isset($val)) {
-            $new_array += [$val[0] => $val[1]];
+    foreach ($handle as $search => $replace) {
+        if ($replace[0] == key($values)) { // check if passed key matches
+            $new = array( // append passed values to insert into multidimensional array
+                0 => key($values),
+                1 => $values[key($values)]
+            );
+            $handle[$search] = array_replace($handle[$search], $new); // replace the associative array within the multidimensinal array
         }
     }
-    // foreach ($new_array as $key => $val) {
-    //     if ($key == $values[0]) {
-    //         $val = $values[1];
-    //     }
-    // }
-
-    //file_put_contents($file, $new_array);
-    var_dump($new_array);
+    $fp = fopen($file, 'w'); //write-only mode
+    foreach ($handle as $val) { //Re-write the edited array to csv
+        fputcsv($fp, $val);
+    }
+    fclose($fp);
 }
 // one function for emptying the record on a specific line (delete the content of a line, but leave an empty line  in the file)
 
@@ -61,6 +61,7 @@ function edit_csv($file, $values)
 
 //Testing Area
 $quote = array(
-    2 => 'Test'
+    9 => 'Test'
 );
-print_r(read_one_csv_element('data\quotes.csv', 3));
+// print_r(edit_csv('data\quotes.csv', $quote));
+// print_r(value($quote));
