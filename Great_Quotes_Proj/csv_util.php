@@ -56,12 +56,39 @@ function edit_csv($file, $values)
     fclose($fp);
 }
 // one function for emptying the record on a specific line (delete the content of a line, but leave an empty line  in the file)
+function drop_ln_from_csv($file, $element)
+{
+    $handle = read_csv($file); // pass to read_csv function to get array
 
+    foreach ($handle as $key => $val) {
+        if ($val[0] == $element) { // Match $element with id in csv
+            $handle[$key] = array(
+                0 => $element,
+                1 => ''
+            );
+        }
+    }
+
+    $fp = fopen($file, 'w'); //write-only mode
+    foreach ($handle as $val) { //Re-write the edited array to csv
+        fputcsv($fp, $val);
+    }
+    fclose($fp);
+}
 // one function for deleting a line from the file (delete the line altogether)
+function rm_from_csv($file, $element)
+{
+    $handle = read_csv($file); // pass to read_csv function to get array
 
-//Testing Area
-$quote = array(
-    9 => 'Test'
-);
-// print_r(edit_csv('data\quotes.csv', $quote));
-// print_r(value($quote));
+    foreach ($handle as $key => $val) {
+        if ($val[0] == $element) { // Match $element with id in csv
+            unset($handle[$key]); // Remove row
+        }
+    }
+
+    $fp = fopen($file, 'w'); //write-only mode
+    foreach ($handle as $val) { //Re-write the edited array to csv
+        fputcsv($fp, $val);
+    }
+    fclose($fp);
+}
