@@ -126,6 +126,6 @@ function user_exists($email, $password)
 
 function redirect($url)
 {
-	header('url=' . $url, TRUE, 302);
-	die();
+	return '<meta http-equiv="refresh" content="1; URL="' . $url . '>';
+	exit();
 }

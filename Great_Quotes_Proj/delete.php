@@ -11,7 +11,7 @@ if(!isset($_SESSION['logged']) && $_SESSION['logged'] == false) {
 $author = read_one_csv_element('data\authors.csv', $_GET['author']);
 $quote = read_one_csv_element('data\quotes.csv', $_GET['author']);
 
-if(count($_POST)>0) {
+if(isset($_POST['submit'])) {
     rm_from_csv('data\quotes.csv', $_GET['author']);
 }
 
@@ -21,8 +21,6 @@ if(count($_POST)>0) {
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
     <title>Great Quotes! - Detail</title>
     <link rel="stylesheet" href="css/nicepage.css" media="screen" />
     <link rel="stylesheet" href="css/Detail.css" media="screen" />
@@ -56,8 +54,6 @@ if(count($_POST)>0) {
     />
 
     <meta name="theme-color" content="#478ac9" />
-    <meta property="og:title" content="Detail" />
-    <meta property="og:type" content="website" />
   </head>
   <body class="u-body u-xl-mode" data-lang="en">
     <header>
@@ -103,6 +99,11 @@ if(count($_POST)>0) {
                 <li class="nav-item">
                   <a class="nav-link" href="signup.php">Signup</a>
                 </li>
+                <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="signout.php">Sign Out</a>
+                </li>
+                <?php endif; ?>
               </ul>
             </div>
           </div>
@@ -124,7 +125,7 @@ if(count($_POST)>0) {
             <br />
             <form method="POST">
                 <h4 class="u-align-center u-text u-text-default u-text-1">Are you sure you would like to delete?</h4>
-                <input class="btn btn-danger" type="submit" id="submit" value="Yes" data-bs-toggle="modal" data-bs-target="#successModal">
+                <input class="btn btn-danger" type="submit" id="submit" name="submit" value="Yes" data-bs-toggle="modal" data-bs-target="#successModal">
                 <a href=<?= 'detail.php?author=' . $_GET['author']; ?> class="btn btn-dark" type="cancel" value="No">
             </form>
         </div>
@@ -160,7 +161,7 @@ if(count($_POST)>0) {
       crossorigin="anonymous"
     ></script>
     <script>
-        const myModal = document.getElementById('myModal')
+        const myModal = document.getElementById('successModal')
         const myInput = document.getElementById('submit')
 
         myModal.addEventListener('shown.bs.modal', () => {

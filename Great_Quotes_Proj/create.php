@@ -35,7 +35,6 @@ if (isset($_POST['submit'])) {
 ?>
 <!DOCTYPE html>
 <html style="font-size: 16px" lang="en">
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
@@ -48,12 +47,10 @@ if (isset($_POST['submit'])) {
     <script src="https://kit.fontawesome.com/057979aec3.js" crossorigin="anonymous"></script>
     <script class="u-script" type="text/javascript" src="js/jquery.js" defer=""></script>
     <script class="u-script" type="text/javascript" src="js/nicepage.js" defer=""></script>
-    <meta name="generator" content="Nicepage 4.19.3, nicepage.com" />
     <link id="u-theme-google-font" rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i" />
 
 </head>
-
 <body class="u-body u-xl-mode">
     <header>
         <nav class="navbar bg-light fixed-top">
@@ -82,6 +79,11 @@ if (isset($_POST['submit'])) {
                             <li class="nav-item">
                                 <a class="nav-link" href="signup.php">Signup</a>
                             </li>
+                            <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="signout.php">Sign Out</a>
+                            </li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                 </div>
@@ -112,7 +114,6 @@ if (isset($_POST['submit'])) {
             </form>
         </div>
     </section>
-
     <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-5cf2">
         <div class="u-clearfix u-sheet u-sheet-1">
             <p class="u-small-text u-text u-text-variant u-text-1">

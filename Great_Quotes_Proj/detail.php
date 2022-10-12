@@ -1,4 +1,5 @@
 <?php
+session_start();
 include('csv_util.php');
 // the page shows a specific quote (selected by the user) written using a bigger font, with its author
 // a "delete" button enables you to delete the quote
@@ -13,8 +14,6 @@ $quote = read_one_csv_element('data\quotes.csv', $_GET['author']);
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
     <title>Great Quotes! - Detail</title>
     <link rel="stylesheet" href="css/nicepage.css" media="screen" />
     <link rel="stylesheet" href="css/Detail.css" media="screen" />
@@ -31,7 +30,6 @@ $quote = read_one_csv_element('data\quotes.csv', $_GET['author']);
     <meta property="og:title" content="Detail" />
     <meta property="og:type" content="website" />
 </head>
-
 <body class="u-body u-xl-mode" data-lang="en">
     <header>
         <nav class="navbar bg-light fixed-top">
@@ -60,6 +58,11 @@ $quote = read_one_csv_element('data\quotes.csv', $_GET['author']);
                             <li class="nav-item">
                                 <a class="nav-link" href="signup.php">Signup</a>
                             </li>
+                            <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="signout.php">Sign Out</a>
+                            </li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                 </div>
@@ -73,6 +76,8 @@ $quote = read_one_csv_element('data\quotes.csv', $_GET['author']);
             <p class="u-large-text u-text u-text-variant u-text-2" style="color:black;">
                 <?= $quote; ?>
             </p>
+            <!-- show edit buttons to logged in users -->
+            <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
             <a href=<?= 'delete.php?author=' . $_GET['author']; ?>
                 class="u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-2-base u-radius-50 u-btn-1">
                 <i class="fa-solid fa-trash-can"></i>
@@ -81,6 +86,7 @@ $quote = read_one_csv_element('data\quotes.csv', $_GET['author']);
                 class="u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-3-base u-radius-50 u-btn-2">
                 <i class="fa-solid fa-gear"></i>
                 Modify</a>
+            <?php endif; ?>
         </div>
     </section>
 

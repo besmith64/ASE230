@@ -1,4 +1,5 @@
 <?php
+session_start();
 include('csv_util.php');
 // the file lists all the available quotes, together with their authors (e.g., "I try to dress classy and dance cheesy" - Psy)
 // the quote links to the  detail page described below
@@ -12,8 +13,6 @@ $authors = read_csv('data\authors.csv');
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
     <title>Great Quotes!</title>
     <link rel="stylesheet" href="css/nicepage.css" media="screen" />
     <link rel="stylesheet" href="css/Home.css" media="screen" />
@@ -23,7 +22,6 @@ $authors = read_csv('data\authors.csv');
     <script src="https://kit.fontawesome.com/057979aec3.js" crossorigin="anonymous"></script>
     <script class="u-script" type="text/javascript" src="js/jquery.js" defer=""></script>
     <script class="u-script" type="text/javascript" src="js/nicepage.js" defer=""></script>
-    <meta name="generator" content="Nicepage 4.19.3, nicepage.com" />
     <link id="u-theme-google-font" rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i" />
 
@@ -60,6 +58,11 @@ $authors = read_csv('data\authors.csv');
                             <li class="nav-item">
                                 <a class="nav-link" href="signup.php">Signup</a>
                             </li>
+                            <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="signout.php">Sign Out</a>
+                            </li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                 </div>
@@ -88,8 +91,10 @@ $authors = read_csv('data\authors.csv');
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
                 <a href='create.php'>
                     <button class="btn btn-primary" type="button">Create</button></a>
+                <?php endif; ?>
             </div>
         </div>
     </section>
