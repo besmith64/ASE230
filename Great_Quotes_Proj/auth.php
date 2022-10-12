@@ -7,7 +7,8 @@ $_matched = false;
 $_banned = false;
 
 // add parameters
-function signin($email, $password){
+function signin($email, $password)
+{
 	// add the body of the function based on the guidelines of signin.php
 	global $_registered, $_matched, $_banned;
 	// 4. check if the file containing banned users exists
@@ -27,7 +28,8 @@ function signin($email, $password){
 }
 
 // add parameters
-function signup($email, $password){
+function signup($email, $password)
+{
 	// add the body of the function based on the guidelines of signup.php
 	global $_registered, $_matched, $_banned;
 	// check if the file containing banned users exists
@@ -40,42 +42,46 @@ function signup($email, $password){
 		// encrypt password
 		$encrypted_password = password_hash($password, PASSWORD_BCRYPT);
 		// save the user in the database 
-		$handle = fopen('data\banned.csv', 'a+'); // open the file
+		$handle = fopen('data\users.csv', 'a+'); // open the file
 		fputs($handle, $email . ";" . $encrypted_password . PHP_EOL);
 		fclose($handle);
 		// show them a success message and redirect them to the sign in page
-		die("Success!");
-		header("Location: signin.php", TRUE, 302);
-		die();
+		return '<div class="alert alert-success" role="alert">Success!</div>';
+		sleep(3);
+		// Go to sign in page
+		redirect('signin.php');
+	} elseif ($_registered == true || $_matched == true) {
+		return '<div class="alert alert-danger" role="alert">User already exists!</div>';
 	}
 }
 
-function signout(){
+function signout()
+{
 	// add the body of the function based on the guidelines of signout.php
-	if ($_SESSION['logged']=true) {
-		$_SESSION['logged']=false;
+	if ($_SESSION['logged'] = true) {
+		$_SESSION['logged'] = false;
 		session_destroy();
-		// redirect the user to the public page.
-		header("Location: public.php", TRUE, 302);
-		die();
+		// redirect the user to public version of index.php
+		redirect('index.php');
 	}
 }
 
-function is_logged(){
+function is_logged()
+{
 	// check if the user is logged
 	//return true|false
-	if(isset($_COOKIE['user'])) {
-		$_SESSION['logged']=true;
+	if (isset($_COOKIE['user'])) {
+		$_SESSION['logged'] = true;
 
-		// index.php
-		header("Location: index.php", TRUE, 302);
-		die();
+		// redirect the user to member version of index.php
+		redirect('index.php');
 	} else {
-		$_SESSION['logged']=false;
+		$_SESSION['logged'] = false;
 	}
 }
 
-function is_banned($email) {
+function is_banned($email)
+{
 	// check if the file containing banned users exists
 	global $_banned;
 
@@ -83,36 +89,43 @@ function is_banned($email) {
 		$handle = fopen('data\banned.csv', 'r'); // open the file
 		// 5. check if the email has been banned
 		while (($row = fgetcsv($handle)) !== false) {
-			$user = explode(';', $row); // explode the csv row
+			$string = implode('', $row);
+			$user = explode(';', $string); // explode the csv row
 
 			if ($email == $user[0]) {
 				$_banned = true; // return that the user has been banned
 			}
-        }
+		}
 		fclose($handle); // close the file
 	}
 }
 
-function user_exists($email, $password) {
+function user_exists($email, $password)
+{
 	global $_registered, $_matched;
 
 	if (file_exists('data\users.csv') and is_file('data\users.csv')) {
 		$handle = fopen('data\users.csv', 'r'); // open the file
 		// 7. check if the email is registered
 		while (($row = fgetcsv($handle)) !== false) {
-			$user = explode(';', $row); // explode the csv row
+			$string = implode('', $row);
+			$user = explode(';', $string); // explode the csv row
 
 			if ($email == $user[0]) {
 				$_registered = true; // return that the user exists already
 			}
 			// 8. check if the password is correct
-			if (password_verify($password,$user[1])) {
+			if (password_verify($password, $user[1])) {
 				$_matched = true; // return matched passwords
-			} else {
-				die('Password does not match!');
 			}
-        }
+		}
 		fclose($handle); // close the file
 
 	}
+}
+
+function redirect($url)
+{
+	header('url=' . $url, TRUE, 302);
+	die();
 }
