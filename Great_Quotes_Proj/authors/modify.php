@@ -1,40 +1,52 @@
 <?php
 session_start();
-include('csv_util.php');
-// the file lists all the available quotes, together with their authors (e.g., "I try to dress classy and dance cheesy" - Psy)
-// the quote links to the  detail page described below
-// a "create" button enables you to go to the create page described above
-$authors = read_csv('data\authors.csv');
+// if the user is not logged in, redirect them to the public page
+if (!isset($_SESSION['logged']) && $_SESSION['logged'] == false) {
+  header("Location: ../index.php", TRUE, 302);
+  die();
+}
+include('../csv_util.php');
+// the file displays a form with a text field where users can type the quote and a select box that displays all the available authors
+// as the form gets submitted, a new quote is added to quotes.csv
+$author = read_one_csv_element('..\data\authors.csv', $_GET['author']);
+$id = $_GET['author'];
+$error = '';
+
+if (isset($_POST['submit'])) {
+
+    $file = '..\data\authors.csv';
+    $values = array(
+      'id' => $id,
+      'author' => $_POST['author']
+    );
+    edit_csv($file, $values);
+    $error = '<div class="alert alert-success" role="alert">Success!</div>';
+}
 
 ?>
 <!DOCTYPE html>
 <html style="font-size: 16px" lang="en">
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
     <title>Great Quotes!</title>
-    <link rel="stylesheet" href="css/nicepage.css" media="screen" />
-    <link rel="stylesheet" href="css/Home.css" media="screen" />
+    <link rel="stylesheet" href="../css/nicepage.css" media="screen" />
+    <link rel="stylesheet" href="../css/Home.css" media="screen" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/057979aec3.js" crossorigin="anonymous"></script>
-    <script class="u-script" type="text/javascript" src="js/jquery.js" defer=""></script>
-    <script class="u-script" type="text/javascript" src="js/nicepage.js" defer=""></script>
+    <script class="u-script" type="text/javascript" src="../js/jquery.js" defer=""></script>
+    <script class="u-script" type="text/javascript" src="../js/nicepage.js" defer=""></script>
     <link id="u-theme-google-font" rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i" />
 
-    <meta name="theme-color" content="#478ac9" />
-    <meta property="og:title" content="Home" />
-    <meta property="og:type" content="website" />
 </head>
-
 <body class="u-body u-xl-mode">
     <header>
         <nav class="navbar bg-light fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.php"><i class="fa-solid fa-pen-ruler"></i> Great Quotes!</a>
+                <a class="navbar-brand" href="../index.php"><i class="fa-solid fa-pen-ruler"></i> Great Quotes!</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                     <span class="navbar-toggler-icon"></span>
@@ -50,22 +62,22 @@ $authors = read_csv('data\authors.csv');
                     <div class="offcanvas-body">
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="index.php">Home</a>
+                                <a class="nav-link active" aria-current="page" href="../index.php">Home</a>
                             </li>
                             <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="authors/index.php">Author List</a>
+                                <a class="nav-link" href="index.php">Author List</a>
                             </li>
                             <?php endif; ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="signin.php">Login</a>
+                                <a class="nav-link" href="../signin.php">Login</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="signup.php">Signup</a>
+                                <a class="nav-link" href="../signup.php">Signup</a>
                             </li>
                             <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="signout.php">Sign Out</a>
+                                <a class="nav-link" href="../signout.php">Sign Out</a>
                             </li>
                             <?php endif; ?>
                         </ul>
@@ -77,29 +89,28 @@ $authors = read_csv('data\authors.csv');
     <section class="u-align-left u-clearfix u-image u-shading u-section-1" id="carousel_57ee" data-image-width="1280"
         data-image-height="848">
         <div class="u-clearfix u-sheet u-sheet-1">
-            <div class="d-grid gap-6 col-6 mx-auto">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Author</th>
-                            <th scope="col">Quote</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($authors as $key => $val) : ?>
-                        <tr onclick="document.location = `<?= 'quotes/detail.php?author=' . $val[0]; ?>`;">
-                            <th scope="row"><?= $val[0]; ?></th>
-                            <td><?= $val[1]; ?></td>
-                            <td><?= read_one_csv_element('data\quotes.csv', $val[0]); ?></td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-                <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
-                <a href='quotes/create.php'>
-                    <button class="btn btn-primary" type="button">Create</button></a>
-                <?php endif; ?>
+            <div id="liveAlertPlaceholder"><?= $error ?></div>
+            <form method="POST">
+                <div class="input-group mb-3">
+                  <span class="input-group-text">Author</span>
+                  <input type="text" class="form-control" name="author"><?= $author; ?></input>
+                </div>
+                <br></br>
+                <button type="submit" name="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#successModal">Submit</button>
+            </form>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="successLabel">Success!</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+                    <a href="<?= 'detail.php?author=' . $id; ?>" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
+                </div>
+                </div>
             </div>
         </div>
     </section>
@@ -112,6 +123,14 @@ $authors = read_csv('data\authors.csv');
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">
+    </script>
+    <script>
+        const myModal = document.getElementById('successModal')
+        const myInput = document.getElementById('submit')
+
+        myModal.addEventListener('shown.bs.modal', () => {
+        myInput.focus()
+        })
     </script>
 </body>
 

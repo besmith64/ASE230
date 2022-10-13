@@ -27,9 +27,8 @@ if (isset($_POST['submit'])) {
     );
     write_csv($file, $values);
     $error = '<div class="alert alert-success" role="alert">Successfully Submitted!</div>';
-    $p_author = '';
-    $p_quote = '';
   }
+  $quote = '';
 }
 
 ?>
@@ -73,6 +72,11 @@ if (isset($_POST['submit'])) {
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                             </li>
+                            <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="authors/index.php">Author List</a>
+                            </li>
+                            <?php endif; ?>
                             <li class="nav-item">
                                 <a class="nav-link" href="signin.php">Login</a>
                             </li>

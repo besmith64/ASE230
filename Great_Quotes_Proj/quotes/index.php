@@ -1,10 +1,10 @@
 <?php
 session_start();
-include('csv_util.php');
+include('../csv_util.php');
 // the file lists all the available quotes, together with their authors (e.g., "I try to dress classy and dance cheesy" - Psy)
 // the quote links to the  detail page described below
 // a "create" button enables you to go to the create page described above
-$authors = read_csv('data\authors.csv');
+$authors = read_csv('..\data\authors.csv');
 
 ?>
 <!DOCTYPE html>
@@ -14,14 +14,14 @@ $authors = read_csv('data\authors.csv');
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
     <title>Great Quotes!</title>
-    <link rel="stylesheet" href="css/nicepage.css" media="screen" />
-    <link rel="stylesheet" href="css/Home.css" media="screen" />
+    <link rel="stylesheet" href="../css/nicepage.css" media="screen" />
+    <link rel="stylesheet" href="../css/Home.css" media="screen" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/057979aec3.js" crossorigin="anonymous"></script>
-    <script class="u-script" type="text/javascript" src="js/jquery.js" defer=""></script>
-    <script class="u-script" type="text/javascript" src="js/nicepage.js" defer=""></script>
+    <script class="u-script" type="text/javascript" src="../js/jquery.js" defer=""></script>
+    <script class="u-script" type="text/javascript" src="../js/nicepage.js" defer=""></script>
     <link id="u-theme-google-font" rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i" />
 
@@ -34,7 +34,7 @@ $authors = read_csv('data\authors.csv');
     <header>
         <nav class="navbar bg-light fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.php"><i class="fa-solid fa-pen-ruler"></i> Great Quotes!</a>
+                <a class="navbar-brand" href="../index.php"><i class="fa-solid fa-pen-ruler"></i> Great Quotes!</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                     <span class="navbar-toggler-icon"></span>
@@ -50,7 +50,7 @@ $authors = read_csv('data\authors.csv');
                     <div class="offcanvas-body">
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="index.php">Home</a>
+                                <a class="nav-link active" aria-current="page" href="../index.php">Home</a>
                             </li>
                             <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
                             <li class="nav-item">
@@ -58,14 +58,14 @@ $authors = read_csv('data\authors.csv');
                             </li>
                             <?php endif; ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="signin.php">Login</a>
+                                <a class="nav-link" href="../signin.php">Login</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="signup.php">Signup</a>
+                                <a class="nav-link" href="../signup.php">Signup</a>
                             </li>
                             <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="signout.php">Sign Out</a>
+                                <a class="nav-link" href="../signout.php">Sign Out</a>
                             </li>
                             <?php endif; ?>
                         </ul>
@@ -88,16 +88,16 @@ $authors = read_csv('data\authors.csv');
                     </thead>
                     <tbody>
                         <?php foreach ($authors as $key => $val) : ?>
-                        <tr onclick="document.location = `<?= 'quotes/detail.php?author=' . $val[0]; ?>`;">
+                        <tr onclick="document.location = `<?= 'detail.php?author=' . $val[0]; ?>`;">
                             <th scope="row"><?= $val[0]; ?></th>
                             <td><?= $val[1]; ?></td>
-                            <td><?= read_one_csv_element('data\quotes.csv', $val[0]); ?></td>
+                            <td><?= read_one_csv_element('..\data\quotes.csv', $val[0]); ?></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
                 <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
-                <a href='quotes/create.php'>
+                <a href='create.php'>
                     <button class="btn btn-primary" type="button">Create</button></a>
                 <?php endif; ?>
             </div>

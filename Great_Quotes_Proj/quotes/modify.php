@@ -2,31 +2,24 @@
 session_start();
 // if the user is not logged in, redirect them to the public page
 if (!isset($_SESSION['logged']) && $_SESSION['logged'] == false) {
-  header("Location: index.php", TRUE, 302);
+  header("Location: ../index.php", TRUE, 302);
   die();
 }
-include('csv_util.php');
+include('../csv_util.php');
 // the file displays a form with a text field where users can type the quote and a select box that displays all the available authors
 // as the form gets submitted, a new quote is added to quotes.csv
-$author = read_one_csv_element('data\authors.csv', $_GET['author']);
-$quote = read_one_csv_element('data\quotes.csv', $_GET['author']);
+$quote = read_one_csv_element('..\data\quotes.csv', $_GET['author']);
 $id = $_GET['author'];
 $error = '';
 
 if (isset($_POST['submit'])) {
 
-    $a_file = 'data\authors.csv';
-    $q_file = 'data\quotes.csv';
-    $a_values = array(
-      'id' => $id,
-      'author' => $_POST['author']
-    );
-    $q_values = array(
+    $file = 'data\quotes.csv';
+    $values = array(
       'id' => $id,
       'quote' => $_POST['quote']
     );
-    edit_csv($a_file, $a_values);
-    edit_csv($q_file, $q_values);
+    edit_csv($file, $values);
     $error = '<div class="alert alert-success" role="alert">Success!</div>';
 }
 
@@ -37,14 +30,14 @@ if (isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
     <title>Great Quotes!</title>
-    <link rel="stylesheet" href="css/nicepage.css" media="screen" />
-    <link rel="stylesheet" href="css/Home.css" media="screen" />
+    <link rel="stylesheet" href="../css/nicepage.css" media="screen" />
+    <link rel="stylesheet" href="../css/Home.css" media="screen" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/057979aec3.js" crossorigin="anonymous"></script>
-    <script class="u-script" type="text/javascript" src="js/jquery.js" defer=""></script>
-    <script class="u-script" type="text/javascript" src="js/nicepage.js" defer=""></script>
+    <script class="u-script" type="text/javascript" src="../js/jquery.js" defer=""></script>
+    <script class="u-script" type="text/javascript" src="../js/nicepage.js" defer=""></script>
     <link id="u-theme-google-font" rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i" />
 
@@ -53,7 +46,7 @@ if (isset($_POST['submit'])) {
     <header>
         <nav class="navbar bg-light fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.php"><i class="fa-solid fa-pen-ruler"></i> Great Quotes!</a>
+                <a class="navbar-brand" href="../index.php"><i class="fa-solid fa-pen-ruler"></i> Great Quotes!</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                     <span class="navbar-toggler-icon"></span>
@@ -69,17 +62,22 @@ if (isset($_POST['submit'])) {
                     <div class="offcanvas-body">
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="index.php">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="signin.php">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="signup.php">Signup</a>
+                                <a class="nav-link active" aria-current="page" href="../index.php">Home</a>
                             </li>
                             <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="signout.php">Sign Out</a>
+                                <a class="nav-link" href="authors/index.php">Author List</a>
+                            </li>
+                            <?php endif; ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="../signin.php">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="../signup.php">Signup</a>
+                            </li>
+                            <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="../signout.php">Sign Out</a>
                             </li>
                             <?php endif; ?>
                         </ul>
@@ -95,10 +93,10 @@ if (isset($_POST['submit'])) {
             <form method="POST">
                 <div class="input-group mb-3">
                   <span class="input-group-text">Author</span>
-                  <input type="text" class="form-control" name="author"><?= $author; ?></input>
+                  <span class="input-group-text"><?= $author; ?></span>
                 </div>
                 <div class="input-group">
-                    <span class="input-group-text">Add Quote</span>
+                    <span class="input-group-text">Modify Quote</span>
                     <textarea name="quote" class="form-control" placeholder="Enter Quote"
                         aria-label="Add Quote"><?php echo $quote; ?></textarea>
                 </div>

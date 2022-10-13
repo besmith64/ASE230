@@ -2,17 +2,16 @@
 session_start();
 // if the user is not logged in, redirect them to the public page
 if(!isset($_SESSION['logged']) && $_SESSION['logged'] == false) {
-	header("Location: index.php", TRUE, 302);
+	header("Location: ../index.php", TRUE, 302);
 	die();
 }
 // the page asks the user if they want to delete the quote (text, author)
 // as the user confirms, the quote is removed from quotes.csv (overwritten)
 // a message confirms that the quote has been deleted and shows the link to the detail page
-$author = read_one_csv_element('data\authors.csv', $_GET['author']);
-$quote = read_one_csv_element('data\quotes.csv', $_GET['author']);
+$author = read_one_csv_element('..\data\authors.csv', $_GET['author']);
 
 if(isset($_POST['submit'])) {
-    rm_from_csv('data\quotes.csv', $_GET['author']);
+  drop_ln_from_csv('..\data\authors.csv', $_GET['author']);
 }
 
 ?>
@@ -22,8 +21,8 @@ if(isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
     <title>Great Quotes! - Detail</title>
-    <link rel="stylesheet" href="css/nicepage.css" media="screen" />
-    <link rel="stylesheet" href="css/Detail.css" media="screen" />
+    <link rel="stylesheet" href="../css/nicepage.css" media="screen" />
+    <link rel="stylesheet" href="../css/Detail.css" media="screen" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -38,13 +37,13 @@ if(isset($_POST['submit'])) {
     <script
       class="u-script"
       type="text/javascript"
-      src="js/jquery.js"
+      src="../js/jquery.js"
       defer=""
     ></script>
     <script
       class="u-script"
       type="text/javascript"
-      src="js/nicepage.js"
+      src="../js/nicepage.js"
       defer=""
     ></script>
     <link
@@ -59,7 +58,7 @@ if(isset($_POST['submit'])) {
     <header>
       <nav class="navbar bg-light fixed-top">
         <div class="container-fluid">
-          <a class="navbar-brand" href="index.php"><i class="fa-solid fa-pen-ruler"></i> Great Quotes!</a>
+          <a class="navbar-brand" href="../index.php"><i class="fa-solid fa-pen-ruler"></i> Great Quotes!</a>
           <button
             class="navbar-toggler"
             type="button"
@@ -89,19 +88,24 @@ if(isset($_POST['submit'])) {
             <div class="offcanvas-body">
               <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="index.php"
+                  <a class="nav-link active" aria-current="page" href="../index.php"
                     >Home</a
                   >
                 </li>
+                <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
                 <li class="nav-item">
-                  <a class="nav-link" href="signin.php">Login</a>
+                    <a class="nav-link" href="index.php">Author List</a>
+                </li>
+                <?php endif; ?>
+                <li class="nav-item">
+                  <a class="nav-link" href="../signin.php">Login</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="signup.php">Signup</a>
+                  <a class="nav-link" href="../signup.php">Signup</a>
                 </li>
                 <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="signout.php">Sign Out</a>
+                    <a class="nav-link" href="../signout.php">Sign Out</a>
                 </li>
                 <?php endif; ?>
               </ul>
@@ -138,7 +142,7 @@ if(isset($_POST['submit'])) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-footer">
-                    <a href="index.php" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
+                    <a href="../index.php" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
                 </div>
                 </div>
             </div>
