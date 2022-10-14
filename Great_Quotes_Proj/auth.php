@@ -38,6 +38,9 @@ function signup($email, $password)
 	// check if the file containing users exists
 	// check if the email is in the database already
 	user_exists($email, $password);
+	if ($_banned == true) {
+		return '<div class="alert alert-danger" role="alert">You are banned! Get Out!</div>';
+	}
 	if (($_registered == false && $_matched == false) && $_banned != true) {
 		// encrypt password
 		$encrypted_password = password_hash($password, PASSWORD_BCRYPT);
@@ -46,11 +49,11 @@ function signup($email, $password)
 		fputs($handle, $email . ";" . $encrypted_password . PHP_EOL);
 		fclose($handle);
 		// show them a success message and redirect them to the sign in page
-		return '<div class="alert alert-success" role="alert">Success!</div>';
+		return '<div class="alert alert-success" role="alert" >Success! <a href="signin.php"><i class="fa-solid fa-right-to-bracket"></i></i> Sign In</a></div>';
 		sleep(3);
 		// Go to sign in page
 		redirect('signin.php');
-	} elseif ($_registered == true || $_matched == true) {
+	} elseif ($_registered == true) {
 		return '<div class="alert alert-danger" role="alert">User already exists!</div>';
 	}
 }
