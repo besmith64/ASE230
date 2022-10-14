@@ -2,30 +2,33 @@
 session_start();
 // if the user is not logged in, redirect them to the public page
 if (!isset($_SESSION['logged']) && $_SESSION['logged'] == false) {
-  header("Location: ../index.php", TRUE, 302);
-  die();
+    header("Location: ../index.php", TRUE, 302);
+    die();
 }
 include('../csv_util.php');
 // the file displays a form with a text field where users can type the quote and a select box that displays all the available authors
 // as the form gets submitted, a new quote is added to quotes.csv
+$author = read_one_csv_element('..\data\authors.csv', $_GET['author']);
 $quote = read_one_csv_element('..\data\quotes.csv', $_GET['author']);
 $id = $_GET['author'];
 $error = '';
 
 if (isset($_POST['submit'])) {
 
-    $file = 'data\quotes.csv';
+    $file = '../data/quotes.csv';
     $values = array(
-      'id' => $id,
-      'quote' => $_POST['quote']
+        $id => $_POST['quote']
     );
     edit_csv($file, $values);
-    $error = '<div class="alert alert-success" role="alert">Success!</div>';
+    $error = '<div class="alert alert-success" role="alert" >Success! <a href="detail.php?author=' . $_GET['author'] . '"><i
+    class="fa-solid fa-house"></i> Home</a></div>';
+    $quote = $_POST['quote'];
 }
 
 ?>
 <!DOCTYPE html>
 <html style="font-size: 16px" lang="en">
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
@@ -42,6 +45,7 @@ if (isset($_POST['submit'])) {
         href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i" />
 
 </head>
+
 <body class="u-body u-xl-mode">
     <header>
         <nav class="navbar bg-light fixed-top">
@@ -66,7 +70,7 @@ if (isset($_POST['submit'])) {
                             </li>
                             <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="authors/index.php">Author List</a>
+                                <a class="nav-link" href="../authors/index.php">Author List</a>
                             </li>
                             <?php endif; ?>
                             <li class="nav-item">
@@ -92,8 +96,8 @@ if (isset($_POST['submit'])) {
             <div id="liveAlertPlaceholder"><?= $error ?></div>
             <form method="POST">
                 <div class="input-group mb-3">
-                  <span class="input-group-text">Author</span>
-                  <span class="input-group-text"><?= $author; ?></span>
+                    <span class="input-group-text">Author</span>
+                    <span class="input-group-text"><?= $author; ?></span>
                 </div>
                 <div class="input-group">
                     <span class="input-group-text">Modify Quote</span>
@@ -101,22 +105,8 @@ if (isset($_POST['submit'])) {
                         aria-label="Add Quote"><?php echo $quote; ?></textarea>
                 </div>
                 <br></br>
-                <button type="submit" name="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#successModal">Submit</button>
+                <button type="submit" id="submit" name="submit" class="btn btn-primary">Submit</button>
             </form>
-        </div>
-        <!-- Modal -->
-        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="successLabel">Success!</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-footer">
-                    <a href="<?= 'detail.php?author=' . $id; ?>" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
-                </div>
-                </div>
-            </div>
         </div>
     </section>
     <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-5cf2">
@@ -128,14 +118,6 @@ if (isset($_POST['submit'])) {
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">
-    </script>
-    <script>
-        const myModal = document.getElementById('successModal')
-        const myInput = document.getElementById('submit')
-
-        myModal.addEventListener('shown.bs.modal', () => {
-        myInput.focus()
-        })
     </script>
 </body>
 

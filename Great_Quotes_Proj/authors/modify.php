@@ -2,8 +2,8 @@
 session_start();
 // if the user is not logged in, redirect them to the public page
 if (!isset($_SESSION['logged']) && $_SESSION['logged'] == false) {
-  header("Location: ../index.php", TRUE, 302);
-  die();
+    header("Location: ../index.php", TRUE, 302);
+    die();
 }
 include('../csv_util.php');
 // the file displays a form with a text field where users can type the quote and a select box that displays all the available authors
@@ -16,16 +16,18 @@ if (isset($_POST['submit'])) {
 
     $file = '..\data\authors.csv';
     $values = array(
-      'id' => $id,
-      'author' => $_POST['author']
+        $id => $_POST['author']
     );
     edit_csv($file, $values);
-    $error = '<div class="alert alert-success" role="alert">Success!</div>';
+    $error = '<div class="alert alert-success" role="alert" >Success! <a href="detail.php?author=' . $_GET['author'] . '"><i
+    class="fa-solid fa-house"></i> Home</a></div>';
+    $author = $_POST['author'];
 }
 
 ?>
 <!DOCTYPE html>
 <html style="font-size: 16px" lang="en">
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
@@ -42,6 +44,7 @@ if (isset($_POST['submit'])) {
         href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i" />
 
 </head>
+
 <body class="u-body u-xl-mode">
     <header>
         <nav class="navbar bg-light fixed-top">
@@ -92,26 +95,12 @@ if (isset($_POST['submit'])) {
             <div id="liveAlertPlaceholder"><?= $error ?></div>
             <form method="POST">
                 <div class="input-group mb-3">
-                  <span class="input-group-text">Author</span>
-                  <input type="text" class="form-control" name="author"><?= $author; ?></input>
+                    <span class="input-group-text">Author</span>
+                    <input type="text" class="form-control" name="author" value="<?= $author; ?>">
                 </div>
                 <br></br>
-                <button type="submit" name="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#successModal">Submit</button>
+                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
             </form>
-        </div>
-        <!-- Modal -->
-        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="successLabel">Success!</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-footer">
-                    <a href="<?= 'detail.php?author=' . $id; ?>" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
-                </div>
-                </div>
-            </div>
         </div>
     </section>
     <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-5cf2">
@@ -123,14 +112,6 @@ if (isset($_POST['submit'])) {
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">
-    </script>
-    <script>
-        const myModal = document.getElementById('successModal')
-        const myInput = document.getElementById('submit')
-
-        myModal.addEventListener('shown.bs.modal', () => {
-        myInput.focus()
-        })
     </script>
 </body>
 

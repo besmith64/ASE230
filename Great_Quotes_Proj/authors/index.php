@@ -87,10 +87,12 @@ $authors = read_csv('..\data\authors.csv');
                     </thead>
                     <tbody>
                         <?php foreach ($authors as $key => $val) : ?>
+                        <?php if ($val[1] != '') : ?>
                         <tr onclick="document.location = `<?= 'detail.php?author=' . $val[0]; ?>`;">
                             <th scope="row"><?= $val[0]; ?></th>
                             <td><?= $val[1]; ?></td>
                         </tr>
+                        <?php endif; ?>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
@@ -100,7 +102,9 @@ $authors = read_csv('..\data\authors.csv');
                 <?php endif; ?>
             </div>
         </div>
+        <br />
     </section>
+
     <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-5cf2">
         <div class="u-clearfix u-sheet u-sheet-1">
             <p class="u-small-text u-text u-text-variant u-text-1">

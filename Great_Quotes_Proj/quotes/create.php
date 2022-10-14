@@ -2,8 +2,8 @@
 session_start();
 // if the user is not logged in, redirect them to the public page
 if (!isset($_SESSION['logged']) && $_SESSION['logged'] == false) {
-  header("Location: ../index.php", TRUE, 302);
-  die();
+    header("Location: ../index.php", TRUE, 302);
+    die();
 }
 include('../csv_util.php');
 // the file displays a form with a text field where users can type the quote and a select box that displays all the available authors
@@ -13,28 +13,29 @@ $quote = '';
 $error = '';
 
 if (isset($_POST['submit'])) {
-  if (empty($_POST['author'])) {
-    $error .= '<div class="alert alert-danger" role="alert">Please select an author.</div>';
-  }
-  if (empty($_POST['quote'])) {
-    $error .= '<div class="alert alert-danger" role="alert">Please enter a quote.</div>';
-  }
-  if ($error == '') {
-    $file = '..\data\quotes.csv';
-    $values = array(
-      'author' => $_POST['author'],
-      'quote' => $_POST['quote']
-    );
-    write_csv($file, $values);
-    $error = '<div class="alert alert-success" role="alert">Successfully Submitted!</div>';
-    $p_author = '';
-    $p_quote = '';
-  }
+    if (empty($_POST['author'])) {
+        $error .= '<div class="alert alert-danger" role="alert">Please select an author.</div>';
+    }
+    if (empty($_POST['quote'])) {
+        $error .= '<div class="alert alert-danger" role="alert">Please enter a quote.</div>';
+    }
+    if ($error == '') {
+        $file = '..\data\quotes.csv';
+        $values = array(
+            'author' => $_POST['author'],
+            'quote' => $_POST['quote']
+        );
+        write_csv($file, $values);
+        $error = '<div class="alert alert-success" role="alert">Successfully Submitted!</div>';
+        $p_author = '';
+        $p_quote = '';
+    }
 }
 
 ?>
 <!DOCTYPE html>
 <html style="font-size: 16px" lang="en">
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
@@ -51,6 +52,7 @@ if (isset($_POST['submit'])) {
         href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i" />
 
 </head>
+
 <body class="u-body u-xl-mode">
     <header>
         <nav class="navbar bg-light fixed-top">
@@ -75,7 +77,7 @@ if (isset($_POST['submit'])) {
                             </li>
                             <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="authors/index.php">Author List</a>
+                                <a class="nav-link" href="../authors/index.php">Author List</a>
                             </li>
                             <?php endif; ?>
                             <li class="nav-item">

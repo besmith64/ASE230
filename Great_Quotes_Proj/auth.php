@@ -61,8 +61,7 @@ function signout()
 	if ($_SESSION['logged'] = true) {
 		$_SESSION['logged'] = false;
 		session_destroy();
-		// redirect the user to public version of index.php
-		redirect('index.php');
+		header("Location: index.php", TRUE, 302);
 	}
 }
 
@@ -72,9 +71,7 @@ function is_logged()
 	//return true|false
 	if (isset($_COOKIE['user'])) {
 		$_SESSION['logged'] = true;
-
-		// redirect the user to member version of index.php
-		redirect('index.php');
+		header("Location: index.php", TRUE, 302);
 	} else {
 		$_SESSION['logged'] = false;
 	}

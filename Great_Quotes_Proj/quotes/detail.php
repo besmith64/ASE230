@@ -30,6 +30,7 @@ $quote = read_one_csv_element('..\data\quotes.csv', $_GET['author']);
     <meta property="og:title" content="Detail" />
     <meta property="og:type" content="website" />
 </head>
+
 <body class="u-body u-xl-mode" data-lang="en">
     <header>
         <nav class="navbar bg-light fixed-top">
@@ -54,7 +55,7 @@ $quote = read_one_csv_element('..\data\quotes.csv', $_GET['author']);
                             </li>
                             <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="authors/index.php">Author List</a>
+                                <a class="nav-link" href="../authors/index.php">Author List</a>
                             </li>
                             <?php endif; ?>
                             <li class="nav-item">

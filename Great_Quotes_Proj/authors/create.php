@@ -2,8 +2,8 @@
 session_start();
 // if the user is not logged in, redirect them to the public page
 if (!isset($_SESSION['logged']) && $_SESSION['logged'] == false) {
-  header("Location: ../index.php", TRUE, 302);
-  die();
+    header("Location: ../index.php", TRUE, 302);
+    die();
 }
 include('../csv_util.php');
 // the file displays a form with a text field where users can type the quote and a select box that displays all the available authors
@@ -14,31 +14,33 @@ $error = '';
 
 foreach ($author_list as $key => $val) {
     for ($i = 0; $i < $val[0]; $i++) {
-        if ($i == $val[0]-1) {
-            $id = $i+2;
+        if ($i == $val[0] - 1) {
+            $id = $i + 2;
         }
     }
 }
 
 if (isset($_POST['submit'])) {
-  if (empty($_POST['new_author'])) {
-    $error .= '<div class="alert alert-danger" role="alert">Please enter a new author.</div>';
-  }
-  if ($error == '') {
-    $file = '../data/quotes.csv';
-    $values = array(
-      'id' => $id,
-      'author' => $_POST['new_author']
-    );
-    write_csv($file, $values);
-    $error = '<div class="alert alert-success" role="alert">Successfully Submitted!</div>';
-  }
-  $id = 0;
+    if (empty($_POST['new_author'])) {
+        $error .= '<div class="alert alert-danger" role="alert">Please enter a new author.</div>';
+    }
+    if ($error == '') {
+        $file = '../data/authors.csv';
+        $values = array(
+            'id' => $id,
+            'author' => $_POST['new_author']
+        );
+        write_csv($file, $values);
+        $error = '<div class="alert alert-success" role="alert">Successfully Submitted! <a href="index.php"><i
+        class="fa-solid fa-house"></i> Home</a></div>';
+    }
+    $id = 0;
 }
 
 ?>
 <!DOCTYPE html>
 <html style="font-size: 16px" lang="en">
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
@@ -55,6 +57,7 @@ if (isset($_POST['submit'])) {
         href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i" />
 
 </head>
+
 <body class="u-body u-xl-mode">
     <header>
         <nav class="navbar bg-light fixed-top">
@@ -106,8 +109,7 @@ if (isset($_POST['submit'])) {
             <form method="POST">
                 <div class="input-group">
                     <span class="input-group-text">Add Author</span>
-                    <input name="new_author" class="form-control" placeholder="Enter Author"
-                        aria-label="Add Author" />
+                    <input name="new_author" class="form-control" placeholder="Enter Author" aria-label="Add Author" />
                 </div>
                 <br></br>
                 <button type="submit" name="submit" class="btn btn-primary">Submit</button>

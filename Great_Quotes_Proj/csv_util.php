@@ -49,6 +49,7 @@ function edit_csv($file, $values)
             $handle[$search] = array_replace($handle[$search], $new); // replace the associative array within the multidimensinal array
         }
     }
+
     $fp = fopen($file, 'w'); //write-only mode
     foreach ($handle as $val) { //Re-write the edited array to csv
         fputcsv($fp, $val);

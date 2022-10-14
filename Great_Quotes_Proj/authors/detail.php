@@ -31,6 +31,7 @@ $quote_list = read_csv('../data/quotes.csv');
     <meta property="og:title" content="Detail" />
     <meta property="og:type" content="website" />
 </head>
+
 <body class="u-body u-xl-mode" data-lang="en">
     <header>
         <nav class="navbar bg-light fixed-top">
@@ -80,9 +81,11 @@ $quote_list = read_csv('../data/quotes.csv');
         <div class="u-clearfix u-sheet u-sheet-1">
             <h1 class="u-text u-text-default u-title u-text-1" style="color:black;"><?= $author; ?></h1>
             <?php foreach ($quote_list as $key => $val) : ?>
+            <?php if ($val[0] == $id) : ?>
             <p class="u-large-text u-text u-text-variant u-text-2" style="color:black;">
                 <?= $val[1]; ?>
             </p>
+            <?php endif; ?>
             <?php endforeach; ?>
             <!-- show edit buttons to logged in users -->
             <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>

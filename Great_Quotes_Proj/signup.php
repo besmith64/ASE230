@@ -10,38 +10,38 @@ $pattern = '/\w+[^\s\d\w]{2}/';
 
 // if the user is alreay signed in, redirect them to the members_page.php page
 if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) {
-  // index.php
-  header("Location: index.php", TRUE, 302);
-  die();
+    // index.php
+    header("Location: index.php", TRUE, 302);
+    die();
 }
 
 // use the following guidelines to create the function in auth.php
 // instead of using "die", return a message that can be printed in the HTML page
 if (count($_POST) > 0) {
-  // check if the fields are empty
-  if (!isset($_POST['email'])) {
-    $error .= '<div class="alert alert-danger" role="alert">please enter your email</div>';
-  } // 2. check if the email is well formatted
-  elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-    $error .= '<div class="alert alert-danger" role="alert">Your email is invalid</div>';
-  } else {
-    $email = $_POST['email'];
-  }
-  if (!isset($_POST['password'])) {
-    $error .= '<div class="alert alert-danger" role="alert">please enter your password</div>';
-  } // check if password length is between 8 and 16 characters
-  elseif (strlen($_POST['password']) < 8 || strlen($_POST['password']) > 16) {
-    $error .= '<div class="alert alert-danger" role="alert">Please enter a password >=8 characters</div>';
-  } // check if the password contains at least 2 special characters
-  elseif (!preg_match($pattern, $_POST['password'])) {
-    $error .= '<div class="alert alert-danger" role="alert">please use at least 2 special characters</div>';
-  } else {
-    $password = $_POST['password'];
-
-    if (isset($email) && isset($password)) {
-      $error .= signup($email, $password);
+    // check if the fields are empty
+    if (!isset($_POST['email'])) {
+        $error .= '<div class="alert alert-danger" role="alert">please enter your email</div>';
+    } // 2. check if the email is well formatted
+    elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        $error .= '<div class="alert alert-danger" role="alert">Your email is invalid</div>';
+    } else {
+        $email = $_POST['email'];
     }
-  }
+    if (!isset($_POST['password'])) {
+        $error .= '<div class="alert alert-danger" role="alert">please enter your password</div>';
+    } // check if password length is between 8 and 16 characters
+    elseif (strlen($_POST['password']) < 8 || strlen($_POST['password']) > 16) {
+        $error .= '<div class="alert alert-danger" role="alert">Please enter a password >=8 characters</div>';
+    } // check if the password contains at least 2 special characters
+    elseif (!preg_match($pattern, $_POST['password'])) {
+        $error .= '<div class="alert alert-danger" role="alert">please use at least 2 special characters</div>';
+    } else {
+        $password = $_POST['password'];
+
+        if (isset($email) && isset($password)) {
+            $error .= signup($email, $password);
+        }
+    }
 }
 
 // improve the form
@@ -135,7 +135,7 @@ if (count($_POST) > 0) {
                             required="" />
                     </div>
                     <div class="u-align-left u-form-group u-form-submit u-block-4b94-33">
-                        <button type="submit" class="u-btn u-btn-submit u-button-style u-block-4b94-34">Login</button>
+                        <button type="submit" class="u-btn u-btn-submit u-button-style u-block-4b94-34">Create</button>
                     </div>
                 </form>
             </div>

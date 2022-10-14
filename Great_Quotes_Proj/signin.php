@@ -39,8 +39,6 @@ if (count($_POST) > 0) {
         }
     }
 }
-print_r($_SESSION['logged']);
-// improve the form
 ?>
 <!DOCTYPE html>
 <html style="font-size: 16px">
