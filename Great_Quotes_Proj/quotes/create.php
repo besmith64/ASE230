@@ -107,7 +107,9 @@ if (isset($_POST['submit'])) {
                     <select name="author" class="form-select" id="inputGroupSelect">
                         <option selected>Choose...</option>
                         <?php foreach ($author as $key => $val) : ?>
+                        <?php if ($val[1] != '') : ?>
                         <option value=<?= $val[0]; ?>><?= $val[1]; ?></option>
+                        <?php endif; ?>
                         <?php endforeach; ?>
                     </select>
                 </div>
