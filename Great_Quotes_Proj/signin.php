@@ -1,60 +1,61 @@
 <?php
 session_start();
-include('csv_util.php');
-// the file lists all the available quotes, together with their authors (e.g., "I try to dress classy and dance cheesy" - Psy)
-// the quote links to the  detail page described below
-// a "create" button enables you to go to the create page described above
-$authors = read_csv('data/authors.csv');
+//Add functions
+include('auth.php');
+//Declare variables
+$error = '';
+$email = '';
+$password = '';
 
+// if the user is alreay signed in, redirect them to the members_page.php page
+if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) {
+    // index.php
+    header("Location: index.php", TRUE, 302);
+    die();
+}
+// use the following guidelines to create the function in auth.php
+//instead of using "die", return a message that can be printed in the HTML page
+if (count($_POST) > 0) {
+    // 1. check if email and password have been submitted
+    if (!isset($_POST['email'])) {
+        $error .= '<div class="alert alert-danger" role="alert">please enter your email</div>';
+    } // 2. check if the email is well formatted
+    elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        $error .= '<div class="alert alert-danger" role="alert">Your email is invalid</div>';
+    } else {
+        $email = $_POST['email'];
+    }
+    if (!isset($_POST['password'])) {
+        $error .= '<div class="alert alert-danger" role="alert">please enter your password</div>';
+    } // check if password length is between 8 and 16 characters
+    elseif (strlen($_POST['password']) < 8 || strlen($_POST['password']) > 16) {
+        $error .= '<div class="alert alert-danger" role="alert">Please enter a password >=8 characters</div>';
+    } else {
+        $password = $_POST['password'];
+
+        //Pass the function
+        if (isset($email) && isset($password)) {
+            signin($email, $password);
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
-<html style="font-size: 16px" lang="en">
+<html style="font-size: 16px">
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
     <title>Great Quotes!</title>
-    <link rel="stylesheet" href="css/nicepage.css" media="screen" />
-    <link rel="stylesheet" href="css/Home.css" media="screen" />
+    <link rel="stylesheet" href="css\login.css" media="screen" />
+    <link rel="stylesheet" href="css\nicepage.css" media="screen" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/057979aec3.js" crossorigin="anonymous"></script>
     <script class="u-script" type="text/javascript" src="js/jquery.js" defer=""></script>
     <script class="u-script" type="text/javascript" src="js/nicepage.js" defer=""></script>
-    <link id="u-theme-google-font" rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i" />
-
-<<<<<<< HEAD
-<body>
-    <div class="d-grid gap-2 col-6 mx-auto">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Author</th>
-                    <th scope="col">Quote</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($authors as $key => $val) : ?>
-                <tr onclick="document.location = `<?= 'detail.php?author=' . $val[0]; ?>`;">
-                    <th scope="row"><?= $val[0]; ?></th>
-                    <td><?= $val[1]; ?></td>
-                    <td><?= read_one_csv_element('data/quotes.csv', $val[0]); ?></td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        <a href='create.php'>
-            <button class="btn btn-primary" type="button">Create</button></a>
-    </div>
-=======
-    <meta name="theme-color" content="#478ac9" />
-    <meta property="og:title" content="Home" />
-    <meta property="og:type" content="website" />
 </head>
->>>>>>> b3d304769ed5f60424fafde9d97f064a2e88560f
 
 <body class="u-body u-xl-mode">
     <header>
@@ -100,41 +101,33 @@ $authors = read_csv('data/authors.csv');
             </div>
         </nav>
     </header>
-    <section class="u-align-left u-clearfix u-image u-shading u-section-1" id="carousel_57ee" data-image-width="1280"
-        data-image-height="848">
-        <div class="u-clearfix u-sheet u-sheet-1">
-            <div class="d-grid gap-6 col-6 mx-auto">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Author</th>
-                            <th scope="col">Quote</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($authors as $key => $val) : ?>
-                        <?php if ($val[1] != '') : ?>
-                        <tr onclick="document.location = `<?= 'quotes/detail.php?author=' . $val[0]; ?>`;">
-                            <th scope="row"><?= $val[0]; ?></th>
-                            <td><?= $val[1]; ?></td>
-                            <?php if (read_one_csv_element('data\quotes.csv', $val[0]) != null) : ?>
-                            <td><?= read_one_csv_element('data\quotes.csv', $val[0]); ?></td>
-                            <?php else : ?>
-                            <td>No quote created!</td>
-                            <?php endif; ?>
-                        </tr>
-                        <?php endif; ?>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-                <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
-                <a href='quotes/create.php'>
-                    <button class="btn btn-primary" type="button">Create</button></a>
-                <?php endif; ?>
+    <section class="u-align-center u-clearfix u-block-4b94-1 u-section-1" custom-posts-hash="T"
+        data-section-properties='{"margin":"both","stretch":true}' data-id="4b94" data-style="login-form-1"
+        id="sec-0baa" data-image-width="1280" data-image-height="848">
+        <div class="u-clearfix u-sheet u-block-4b94-2">
+            <div id="liveAlertPlaceholder"><?= $error ?></div>
+            <h2>Sign-In</h2>
+            <div class="u-form u-login-control u-block-4b94-24">
+                <form method="POST"
+                    class="u-clearfix u-form-custom-backend u-form-spacing-10 u-form-vertical u-inner-form"
+                    source="custom" name="form" style="padding: 10px">
+                    <div class="u-form-group u-form-name u-block-4b94-25">
+                        <label for="username-a30d" class="u-label u-block-4b94-26">Username *</label>
+                        <input type="text" placeholder="Enter your email" id="username-a30d" type="email" name="email"
+                            class="u-border-grey-30 u-input u-input-rectangle u-block-4b94-27" required="" />
+                    </div>
+                    <div class="u-form-group u-form-password u-block-4b94-28">
+                        <label for="password-a30d" class="u-label u-block-4b94-29">Password *</label>
+                        <input type="text" placeholder="Enter your Password" id="password-a30d" type="password"
+                            name="password" class="u-border-grey-30 u-input u-input-rectangle u-block-4b94-30"
+                            required="" />
+                    </div>
+                    <div class="u-align-left u-form-group u-form-submit u-block-4b94-33">
+                        <button type="submit" class="u-btn u-btn-submit u-button-style u-block-4b94-34">Login</button>
+                    </div>
+                </form>
             </div>
         </div>
-        <br />
     </section>
     <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-5cf2">
         <div class="u-clearfix u-sheet u-sheet-1">

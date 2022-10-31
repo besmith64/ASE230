@@ -1,15 +1,39 @@
 <?php
 session_start();
+// if the user is not logged in, redirect them to the public page
+if (!isset($_SESSION['logged']) && $_SESSION['logged'] == false) {
+  header("Location: index.php", TRUE, 302);
+  die();
+}
 include('csv_util.php');
-// the file lists all the available quotes, together with their authors (e.g., "I try to dress classy and dance cheesy" - Psy)
-// the quote links to the  detail page described below
-// a "create" button enables you to go to the create page described above
-$authors = read_csv('data/authors.csv');
+// the file displays a form with a text field where users can type the quote and a select box that displays all the available authors
+// as the form gets submitted, a new quote is added to quotes.csv
+$author = read_csv('data\authors.csv');
+$quote = '';
+$error = '';
+
+if (isset($_POST['submit'])) {
+  if (empty($_POST['author'])) {
+    $error .= '<div class="alert alert-danger" role="alert">Please select an author.</div>';
+  }
+  if (empty($_POST['quote'])) {
+    $error .= '<div class="alert alert-danger" role="alert">Please enter a quote.</div>';
+  }
+  if ($error == '') {
+    $file = 'data\quotes.csv';
+    $values = array(
+      'author' => $_POST['author'],
+      'quote' => $_POST['quote']
+    );
+    write_csv($file, $values);
+    $error = '<div class="alert alert-success" role="alert">Successfully Submitted!</div>';
+  }
+  $quote = '';
+}
 
 ?>
 <!DOCTYPE html>
 <html style="font-size: 16px" lang="en">
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
@@ -25,37 +49,7 @@ $authors = read_csv('data/authors.csv');
     <link id="u-theme-google-font" rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i" />
 
-<<<<<<< HEAD
-<body>
-    <div class="d-grid gap-2 col-6 mx-auto">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Author</th>
-                    <th scope="col">Quote</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($authors as $key => $val) : ?>
-                <tr onclick="document.location = `<?= 'detail.php?author=' . $val[0]; ?>`;">
-                    <th scope="row"><?= $val[0]; ?></th>
-                    <td><?= $val[1]; ?></td>
-                    <td><?= read_one_csv_element('data/quotes.csv', $val[0]); ?></td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        <a href='create.php'>
-            <button class="btn btn-primary" type="button">Create</button></a>
-    </div>
-=======
-    <meta name="theme-color" content="#478ac9" />
-    <meta property="og:title" content="Home" />
-    <meta property="og:type" content="website" />
 </head>
->>>>>>> b3d304769ed5f60424fafde9d97f064a2e88560f
-
 <body class="u-body u-xl-mode">
     <header>
         <nav class="navbar bg-light fixed-top">
@@ -103,38 +97,26 @@ $authors = read_csv('data/authors.csv');
     <section class="u-align-left u-clearfix u-image u-shading u-section-1" id="carousel_57ee" data-image-width="1280"
         data-image-height="848">
         <div class="u-clearfix u-sheet u-sheet-1">
-            <div class="d-grid gap-6 col-6 mx-auto">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Author</th>
-                            <th scope="col">Quote</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($authors as $key => $val) : ?>
-                        <?php if ($val[1] != '') : ?>
-                        <tr onclick="document.location = `<?= 'quotes/detail.php?author=' . $val[0]; ?>`;">
-                            <th scope="row"><?= $val[0]; ?></th>
-                            <td><?= $val[1]; ?></td>
-                            <?php if (read_one_csv_element('data\quotes.csv', $val[0]) != null) : ?>
-                            <td><?= read_one_csv_element('data\quotes.csv', $val[0]); ?></td>
-                            <?php else : ?>
-                            <td>No quote created!</td>
-                            <?php endif; ?>
-                        </tr>
-                        <?php endif; ?>
+            <div id="liveAlertPlaceholder"><?= $error ?></div>
+            <form method="POST">
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupSelect">Author</label>
+                    <select name="author" class="form-select" id="inputGroupSelect">
+                        <option selected>Choose...</option>
+                        <?php foreach ($author as $key => $val) : ?>
+                        <option value=<?= $val[0]; ?>><?= $val[1]; ?></option>
                         <?php endforeach; ?>
-                    </tbody>
-                </table>
-                <?php if (isset($_SESSION['logged']) && $_SESSION['logged'] == true) : ?>
-                <a href='quotes/create.php'>
-                    <button class="btn btn-primary" type="button">Create</button></a>
-                <?php endif; ?>
-            </div>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text">Add Quote</span>
+                    <textarea name="quote" class="form-control" placeholder="Enter Quote"
+                        aria-label="Add Quote"><?php echo $quote; ?></textarea>
+                </div>
+                <br></br>
+                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+            </form>
         </div>
-        <br />
     </section>
     <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-5cf2">
         <div class="u-clearfix u-sheet u-sheet-1">
