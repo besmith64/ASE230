@@ -4,7 +4,7 @@ include('csv_util.php');
 // the file lists all the available quotes, together with their authors (e.g., "I try to dress classy and dance cheesy" - Psy)
 // the quote links to the  detail page described below
 // a "create" button enables you to go to the create page described above
-$authors = read_csv('data\authors.csv');
+$authors = read_csv('data/authors.csv');
 
 ?>
 <!DOCTYPE html>
@@ -92,8 +92,8 @@ $authors = read_csv('data\authors.csv');
                         <tr onclick="document.location = `<?= 'quotes/detail.php?author=' . $val[0]; ?>`;">
                             <th scope="row"><?= $val[0]; ?></th>
                             <td><?= $val[1]; ?></td>
-                            <?php if (read_one_csv_element('data\quotes.csv', $val[0]) != null) : ?>
-                            <td><?= read_one_csv_element('data\quotes.csv', $val[0]); ?></td>
+                            <?php if (read_one_csv_element('data/quotes.csv', $val[0]) != null) : ?>
+                            <td><?= read_one_csv_element('data/quotes.csv', $val[0]); ?></td>
                             <?php else : ?>
                             <td>No quote created!</td>
                             <?php endif; ?>

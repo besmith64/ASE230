@@ -8,13 +8,13 @@ if (!isset($_SESSION['logged']) && $_SESSION['logged'] == false) {
 include('../csv_util.php');
 // the file displays a form with a text field where users can type the quote and a select box that displays all the available authors
 // as the form gets submitted, a new quote is added to quotes.csv
-$author = read_one_csv_element('..\data\authors.csv', $_GET['author']);
+$author = read_one_csv_element('../data/authors.csv', $_GET['author']);
 $id = $_GET['author'];
 $error = '';
 
 if (isset($_POST['submit'])) {
 
-    $file = '..\data\authors.csv';
+    $file = '../data/authors.csv';
     $values = array(
         $id => $_POST['author']
     );

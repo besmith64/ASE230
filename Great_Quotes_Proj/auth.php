@@ -45,7 +45,7 @@ function signup($email, $password)
 		// encrypt password
 		$encrypted_password = password_hash($password, PASSWORD_BCRYPT);
 		// save the user in the database 
-		$handle = fopen('data\users.csv', 'a+'); // open the file
+		$handle = fopen('data/users.csv', 'a+'); // open the file
 		fputs($handle, $email . ";" . $encrypted_password . PHP_EOL);
 		fclose($handle);
 		// show them a success message and redirect them to the sign in page
@@ -85,8 +85,8 @@ function is_banned($email)
 	// check if the file containing banned users exists
 	global $_banned;
 
-	if (file_exists('data\banned.csv') and is_file('data\banned.csv')) {
-		$handle = fopen('data\banned.csv', 'r'); // open the file
+	if (file_exists('data/banned.csv') and is_file('data/banned.csv')) {
+		$handle = fopen('data/banned.csv', 'r'); // open the file
 		// 5. check if the email has been banned
 		while (($row = fgetcsv($handle)) !== false) {
 			$string = implode('', $row);
@@ -104,8 +104,8 @@ function user_exists($email, $password)
 {
 	global $_registered, $_matched;
 
-	if (file_exists('data\users.csv') and is_file('data\users.csv')) {
-		$handle = fopen('data\users.csv', 'r'); // open the file
+	if (file_exists('data/users.csv') and is_file('data/users.csv')) {
+		$handle = fopen('data/users.csv', 'r'); // open the file
 		// 7. check if the email is registered
 		while (($row = fgetcsv($handle)) !== false) {
 			$string = implode('', $row);

@@ -4,8 +4,8 @@ include('../csv_util.php');
 // the page shows a specific quote (selected by the user) written using a bigger font, with its author
 // a "delete" button enables you to delete the quote
 // a "modify" button enables you to go to the modify page described below
-$author = read_one_csv_element('..\data\authors.csv', $_GET['author']);
-$quote = read_one_csv_element('..\data\quotes.csv', $_GET['author']);
+$author = read_one_csv_element('../data/authors.csv', $_GET['author']);
+$quote = read_one_csv_element('../data/quotes.csv', $_GET['author']);
 
 ?>
 <!DOCTYPE html>
