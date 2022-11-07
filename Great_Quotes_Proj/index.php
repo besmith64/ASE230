@@ -118,8 +118,8 @@ $authors = read_csv('data/authors.csv');
                         <tr onclick="document.location = `<?= 'quotes/detail.php?author=' . $val[0]; ?>`;">
                             <th scope="row"><?= $val[0]; ?></th>
                             <td><?= $val[1]; ?></td>
-                            <?php if (read_one_csv_element('data\quotes.csv', $val[0]) != null) : ?>
-                            <td><?= read_one_csv_element('data\quotes.csv', $val[0]); ?></td>
+                            <?php if (read_one_csv_element('data/quotes.csv', $val[0]) != null) : ?>
+                            <td><?= read_one_csv_element('data/quotes.csv', $val[0]); ?></td>
                             <?php else : ?>
                             <td>No quote created!</td>
                             <?php endif; ?>
